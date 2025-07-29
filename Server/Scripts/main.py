@@ -1,22 +1,29 @@
 import sys
 from PIL import Image, ImageDraw, ImageFont
 
+DEFAULT_STYLE = 1
 
-def main(Name: str):
-    language = 'en'
-    Name = Name.title()
+def main(args: str):
 
-    with Image.open("./assets/invite card 1.png") as im:
-        if (isEnglish(Name)):
-            font = ImageFont.truetype('./assets/Ubuntu/Ubuntu-Regular.ttf', size=scale_font_size(Name))
-        # if not english assume Arabic.
-        else:
-            
-            font = ImageFont.truetype('./assets/Rubik/static/Rubik-Regular.ttf', size=scale_font_size(Name))
+    Name = args[0].title()
+
+    if (args[1] == 1):
+        background = "./assets/invite card 1.png"
+    if (args[1] == 2):
+        background = "./assets/invite card 2.png"
+
+    # if not english assume Arabic.
+    if (isEnglish(Name)):
+        font = ImageFont.truetype('./assets/Ubuntu/Ubuntu-Regular.ttf', size=scale_font_size(Name))
+        language = 'en'
+    else:
+        font = ImageFont.truetype('./assets/Rubik/static/Rubik-Regular.ttf', size=scale_font_size(Name))
+        language = 'ar'
+
+    with Image.open(background) as im:
         d = ImageDraw.Draw(im)
         x, y = im.size
         d.text((x/2, (y * 0.7)), Name, anchor="mm", font=font, language=language)
-
         im.show()
 
 
@@ -25,10 +32,17 @@ def validate_args(args: list[str]):
     checks if at least 1 argument was passed. 
     any more arguments are ignored
     """
-    if (not len(args) > 1):
-        raise Exception("Missing Required argument/s") 
-    else:
-        return args[1]
+    # if missing arguments print help message
+    if (len(args) <= 1):
+        with open("./help.txt") as help_menu:
+            for line in help_menu.readlines():
+                print(line, end="")
+        sys.exit(0)
+    if (len(args) <= 2):
+        args.append(DEFAULT_STYLE)
+    if (len(args) >= 3):
+        args[2] = int(args[2])
+    return args[1:]
 
 def scale_font_size(Name: str = "Your Name"):
     """

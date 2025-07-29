@@ -1,0 +1,8 @@
+    
+    Usage: Name, [style_number = default 1]
+
+    Description:
+        Name: the text you want to be written in the image
+
+        style_number: the image you want used as the background
+
