@@ -2,3 +2,4 @@ node_modules
 .pyenv
 test.js
 server.js
+.vscode
