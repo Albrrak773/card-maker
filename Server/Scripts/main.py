@@ -1,54 +1,67 @@
-from sys import exit, argv
-from os.path import join, abspath
+from sys import exit, argv, stdout
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
-
+import os.path as op
 
 DEFAULT_STYLE = 1
-
+BASE_PATH = Path("/home/albrrak/Mega sync/Code/Actual Project/invite_card_maker/Server/Scripts")
+LOG_FILE = "history.log"
 
 def main(args: list[str]):
-    BASE_PATH = get_base_path()
-    print(f"SHOWING: {join(BASE_PATH, "history.txt")}")
-    with open(join(BASE_PATH, "history.log"), 'w') as f:
+
+    with open(Path.joinpath(BASE_PATH, LOG_FILE), "a") as f:
         f.write(f"Got called with args {args[0]}, {args[1]}\n")
     Name = args[0].title()
 
     if (args[1] == 1):
-        background = join(BASE_PATH, "assets", "invite card 1.png")
+        background = Path.joinpath(BASE_PATH, "assets", "invite card 1.png")
     if (args[1] == 2):
-        background = join(BASE_PATH, "assets", "invite card 2.png")
+        background = Path.joinpath(BASE_PATH, "assets", "invite card 2.png")
 
     # if not english assume Arabic.
     if (isEnglish(Name)):
-        font = ImageFont.truetype(join(BASE_PATH, 'assets','Ubuntu','Ubuntu-Regular.ttf'), size=scale_font_size(Name))
+        font = ImageFont.truetype(Path.joinpath(BASE_PATH, "assets", "Ubuntu", "Ubuntu-Regular.ttf"), size=scale_font_size(Name))
         language = 'en'
     else:
-        font = ImageFont.truetype(join(BASE_PATH, 'assets','Rubik', 'static', 'Rubik-Regular.ttf'), size=scale_font_size(Name))
+        font = ImageFont.truetype(Path.joinpath(BASE_PATH, "assets", "Rubik", "static","Rubik-Regular.ttf"), size=scale_font_size(Name))
         language = 'ar'
 
     with Image.open(background) as im:
         d = ImageDraw.Draw(im)
         x, y = im.size
         d.text((x/2, (y * 0.7)), Name, anchor="mm", font=font, language=language)
-        im.save(join(BASE_PATH, "..", "output.png"), format="png")
+        if (args[2]):
+            im.save(stdout.buffer, format="png")
+        else:
+            im.save(Path.joinpath(BASE_PATH, "..", "output.png"), format="png")
 
 
 def validate_args(args: list[str]):
     """
     checks if at least 1 argument was passed. 
     any more arguments are ignored
+    returns: [name, style, is_stdout]
     """
-    # if missing arguments print help message
+    length = 3
+    new_args = list([None for x in range(length)]) # new list with None * length
+    #  if missing arguments print help message
     if (len(args) <= 1):
-        with open("./help.txt", "r") as help_menu:
+        with open(Path.joinpath(BASE_PATH, "help.txt"), "r") as help_menu:
             for line in help_menu.readlines():
                 print(line, end="")
         exit(0)
-    if (len(args) <= 2):
-        args.append(DEFAULT_STYLE)
-    if (len(args) >= 3):
-        args[2] = int(args[2])
-    return args[1:]
+    else:
+        new_args[0] = args[1]
+    if ("--style" in args):
+        i = args.index("--style") + 1
+        new_args[1] = int(args[i])
+    else:
+        new_args[1] = DEFAULT_STYLE
+    if ("--stdout" in args):
+        new_args[2] = True
+    else:
+        new_args[2] = False
+    return new_args
 
 def scale_font_size(Name: str = "Your Name"):
     """
@@ -75,10 +88,6 @@ def isEnglish(Name):
         return True
     else:
         return False
-    
-def get_base_path():
-    path = abspath(__file__)
-    return path[1:path.rfind("/")]
 
 if __name__ == "__main__":
     Name = validate_args(argv)

@@ -1,5 +1,5 @@
 import express from "express";
-import { spawn } from "node:child_process";
+import { exec } from "node:child_process";
 const app = express()
 const PORT = 8080
 
@@ -8,19 +8,16 @@ app.get("/:name", handleName);
 
 async function handleName(req, res) {
     const name = req.params.name;
-    const ls = spawn('ls')
-    // console.log(ls);
-
-    const image = spawn(`python3`, [process.cwd() + "/Scripts/main.py", name]);
-    image.on("close", (code) => {
-        console.log(`the proccess pytho3 main.py... closed with code ${code}`);
-        
+    const bufferSize = 1024 * 1024 * 10 // 1MB 
+    const cwd = process.cwd() 
+    const cmd = `'${cwd + "/Scripts/.pyenv/bin/python3"}' '${cwd + "/Scripts/main.py"}' ${name} --stdout`
+    exec(cmd, {"maxBuffer": bufferSize, encoding: null },  async (err, stdout, stderr) => {
+        res.type("png");
+        res.status(200);
+        res.send(stdout);
     })
-    res.type("png");
-    res.status(200);
-    res.sendFile(process.cwd() + "/output.png")
 
-    console.log(ls);
+
 
 }
 

@@ -16,6 +16,7 @@ async function handleName(req:Request, res:Response) {
     res.type("png");
     res.status(200);
     res.sendFile("./output.png")
+    
 
     console.log(ls);
 
