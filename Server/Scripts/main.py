@@ -1,30 +1,36 @@
-import sys
+from sys import exit, argv
+from os.path import join, abspath
 from PIL import Image, ImageDraw, ImageFont
+
 
 DEFAULT_STYLE = 1
 
-def main(args: str):
 
+def main(args: list[str]):
+    BASE_PATH = get_base_path()
+    print(f"SHOWING: {join(BASE_PATH, "history.txt")}")
+    with open(join(BASE_PATH, "history.log"), 'w') as f:
+        f.write(f"Got called with args {args[0]}, {args[1]}\n")
     Name = args[0].title()
 
     if (args[1] == 1):
-        background = "./assets/invite card 1.png"
+        background = join(BASE_PATH, "assets", "invite card 1.png")
     if (args[1] == 2):
-        background = "./assets/invite card 2.png"
+        background = join(BASE_PATH, "assets", "invite card 2.png")
 
     # if not english assume Arabic.
     if (isEnglish(Name)):
-        font = ImageFont.truetype('./assets/Ubuntu/Ubuntu-Regular.ttf', size=scale_font_size(Name))
+        font = ImageFont.truetype(join(BASE_PATH, 'assets','Ubuntu','Ubuntu-Regular.ttf'), size=scale_font_size(Name))
         language = 'en'
     else:
-        font = ImageFont.truetype('./assets/Rubik/static/Rubik-Regular.ttf', size=scale_font_size(Name))
+        font = ImageFont.truetype(join(BASE_PATH, 'assets','Rubik', 'static', 'Rubik-Regular.ttf'), size=scale_font_size(Name))
         language = 'ar'
 
     with Image.open(background) as im:
         d = ImageDraw.Draw(im)
         x, y = im.size
         d.text((x/2, (y * 0.7)), Name, anchor="mm", font=font, language=language)
-        im.show()
+        im.save(join(BASE_PATH, "..", "output.png"), format="png")
 
 
 def validate_args(args: list[str]):
@@ -34,10 +40,10 @@ def validate_args(args: list[str]):
     """
     # if missing arguments print help message
     if (len(args) <= 1):
-        with open("./help.txt") as help_menu:
+        with open("./help.txt", "r") as help_menu:
             for line in help_menu.readlines():
                 print(line, end="")
-        sys.exit(0)
+        exit(0)
     if (len(args) <= 2):
         args.append(DEFAULT_STYLE)
     if (len(args) >= 3):
@@ -70,6 +76,10 @@ def isEnglish(Name):
     else:
         return False
     
+def get_base_path():
+    path = abspath(__file__)
+    return path[1:path.rfind("/")]
 
-Name = validate_args(sys.argv)
-main(Name)
+if __name__ == "__main__":
+    Name = validate_args(argv)
+    main(Name)
