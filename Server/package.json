@@ -4,7 +4,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "npx tsc server.ts && node server.js"
+    "build": "npx tsc",
+    "dev": "npx tsc && node server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",

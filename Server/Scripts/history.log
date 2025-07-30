@@ -37,3 +37,20 @@ Got called with args hjkl, 1
 Got called with args hjkl, 1
 Got called with args name, 1
 Got called with args albrrak, 1
+Got called with args my, 1
+Got called with args my, 1
+Got called with args my, 1
+Got called with args myName, 1
+Got called with args my, 1
+Got called with args my+my, 1
+Got called with args my+name, 1
+Got called with args my+name, 1
+Got called with args my+name, 1
+Got called with args my, 1
+Got called with args my name, 1
+Got called with args my+name, 1
+Got called with args my name, 1
+Got called with args albrrak 773, 1
+Got called with args sys.exit(), 1
+Got called with args albrra+773, 1
+Got called with args albrra 773, 1
