@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite Card Maker</title>
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" type="module"></script>
+</head>
+<body>
+    <main class="main">
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Get Your Invite Card</h1>
+            <p>Type, Preview and Download</p>
+        </section>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Preview Section -->
+            <img src="https://picsum.photos/400/600" alt="a preview of an invite image" class="preview-img">
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <div class="input-group">
+                    <h3>Your Name</h3> 
+                    <input type="text" class="text-input" placeholder="Enter your name"id="messageInput">
+                </div>
+                    <button class="download-main-btn">Download</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating About Button -->
+    <div class="floating-about">
+        <button id="about-btn"></button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <button id="close-btn">&times;</button>
+            <h2 class="modal-header">Albrrak 773</h2>
+        </div>
+    </div>
+
+</body>
+</html>

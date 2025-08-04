@@ -14,14 +14,16 @@ async function handleName(req:Request, res:Response) {
     const cwd = process.cwd() 
     const cmd = `'${cwd + "/Scripts/.pyenv/bin/python3"}' '${cwd + "/Scripts/main.py"}' '${name}' --stdout`
     const bufferSize = 1024 * 1024 * 10 // 1MB 
-    exec(cmd, {"maxBuffer": bufferSize, encoding: null },  (err, stdout, stderr) => {
+    exec(cmd, {"maxBuffer": bufferSize},  (err, stdout, stderr) => {
         if (err){
             console.log(err.code);
             console.log(err.message);
+            console.log(stderr);
         }
         res.type("png");
         res.status(200);
         res.send(stdout);
+        res.end()
     });
 }
 
