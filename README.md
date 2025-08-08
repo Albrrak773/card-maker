@@ -1,6 +1,9 @@
 
 
-
+# API
+if you are a chad and don't need a UI you can intercat with the API
+via https://card.albrrak773.com/{your+name}
+and change the name in the card by change the url parameter
 
 
 
