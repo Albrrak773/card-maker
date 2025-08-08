@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os.path as op
 
 DEFAULT_STYLE = 1
-BASE_PATH = Path("/home/albrrak/Mega sync/Code/Actual Project/invite_card_maker/Server/Scripts")
+BASE_PATH = Path(".")
 LOG_FILE = "history.log"
 
 def main(args: list[str]):
